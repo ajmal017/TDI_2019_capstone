@@ -8603,7 +8603,7 @@ def get_ARIMA_ab(df_ticker, train_a, train_b, forecast_length=5, n_projections=1
                  'm':7, 'start_P':0, 'start_Q':1, 'seasonal':True,
                  'd':None, 'D':1, 'trace':True, 'error_action':'ignore', 
                  'suppress_warnings':True, 'stepwise':True, 'njobs':6}
-    
+    print('attempting auto_arima....')
     model = auto_arima(seriesi.iloc[train_a:train_b], **aa_kwargs)
     print('SARIMAX hyperparameters determined.')
     model_kwargs = model.arima_res_._init_kwds.copy()
