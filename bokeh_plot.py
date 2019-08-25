@@ -72,6 +72,10 @@ from sklearn.preprocessing import StandardScaler, OneHotEncoder, LabelEncoder
 from sklearn.svm import SVC
 from sklearn.utils import shuffle
 
+print()
+print('imports complete.')
+print()
+
 AV_API_key = '567TRV8RTL728INO' # Alpha Vantage
 ts = TimeSeries(key=AV_API_key)
 fx = ForeignExchange(key=AV_API_key)
@@ -8219,8 +8223,9 @@ fit_cache_dir = 'fit_cache'
 
 ticker = 'GOOG'
 commodity_type = 'NYSE Equity'
-
+print('about to use talib')
 function_groups = talib.get_function_groups()
+print('used talib')
 functions = talib.get_functions()
 pattern_list = [function for function in function_groups['Pattern Recognition'] ]
 pattern_names = ['2 CROWS', '3 BLACK CROWS', '3 INSIDE', '3 LINE STRIKE', '3 OUTSIDE', '3 STARS IN THE SOUTH',
@@ -8402,6 +8407,7 @@ def dl_FRED(FRED_series, start_time):
     return df_FRED_ if successes else None
 
 def get_data(ticker_cache_dir, AV_API_key, ticker, commodity_type, use_cache=False):
+    print('getting data...')
     try:
         if use_cache == True:
             # load from cache
@@ -8505,9 +8511,11 @@ def get_data(ticker_cache_dir, AV_API_key, ticker, commodity_type, use_cache=Fal
             print('Ticker data cached.')
     
     start_time = df.index[0].strftime(format='%Y-%m-%d')
+    print('returning data...')
     return df, start_time
 
 def get_df_cat(df_ticker):
+    print('getting df_cat....')
     categorical = ['inc', 'dayofweek', 'month', 'quarter','2 CROWS', '3 BLACK CROWS', '3 INSIDE', '3 LINE STRIKE',
                '3 OUTSIDE', '3 STARS IN THE SOUTH', '3 WHITE SOLDIERS', 'ABANDONED BABY', 'ADVANCE BLOCK', 'BELTHOLD', 'BREAKAWAY', 
                'CLOSING MARUBOZU', 'CONCEAL BABY SWALL', 'COUNTERATTACK', 'DARK CLOUD COVER',  'DOJI', 'DOJI STAR', 'DRAGONFLY DOJI', 
@@ -8522,9 +8530,6 @@ def get_df_cat(df_ticker):
     df_cat = df_cat.fillna(method='ffill')
     df_cat = df_cat.fillna(method='bfill')
     df_cat['HT_TRENDMODE'] = df_cat['HT_TRENDMODE'].apply(lambda x : str(x))   
-    print()
-    print(list(df_cat['HT_TRENDMODE'].unique()))
-    print()
 
     for col in df_cat.columns:
         if (set(df_cat[col])) == {'False', 'True'}:
@@ -8545,10 +8550,11 @@ def get_df_cat(df_ticker):
 
     df_cat['inc+1'] = df_cat['inc'].shift(-1) # target
     df_cat = df_cat.dropna()   
-    
+    print('returning df_cat....')
     return df_cat, df_pat
 
 def get_ML_ab(df_cat, train_a, train_b, n_projections):
+    print('getting ML...')
     df = df_cat.copy()
     y = df['inc+1'] # target
     df = df.drop(columns=['inc+1']) # target removed
@@ -8584,10 +8590,11 @@ def get_ML_ab(df_cat, train_a, train_b, n_projections):
         predictions[classifier_name] = yhat
     print('ok3')
     df_ML = pd.DataFrame(predictions)
+    print('returning ML...')
     return df_ML
 
 def get_ARIMA_ab(df_ticker, train_a, train_b, forecast_length=5, n_projections=10):
-    
+    print('getting ARIMA')
     df_ARIMA = df_ticker[['close', 'diff1']].copy()
     full_series_length = len(df_ARIMA)
     seriest = df_ARIMA['close']
@@ -8638,10 +8645,11 @@ def get_ARIMA_ab(df_ticker, train_a, train_b, forecast_length=5, n_projections=1
     # This would be a good time to cache the dataframe .....
     # df_ARIMA.to_csv(f'.\{ticker_cache_dir}\{ticker}_ARIMA_{train_a}-{train_b}.csv')
     print('ARIMA models trained and forecasted')
+    print('returning ARIMA')
     return df_ARIMA
 
 def get_df_hist(df_ARIMA):
-    
+    print('getting df_hist...')
     def get_hist(col):
         hist, edges = np.histogram(df_ARIMA[col].dropna(), 
                                 bins=10, density=True)
@@ -8658,9 +8666,11 @@ def get_df_hist(df_ARIMA):
         ddict['right'].append(list(right))
     ddict = {k:[e for l in v for e in l] for k,v in ddict.items()}
     df_hist = pd.DataFrame(ddict)
+    print('returning df_hist...')
     return df_hist
 
 def get_df_hist2(df_ARIMA):
+    print('getting df_hist2...')
     ddict2 = defaultdict(list)
     for col, clr in zip(['t+5_PE', 't+4_PE', 't+3_PE', 't+2_PE', 't+1_PE', 'diff1'],
                         ['orange', 'yellow', 'green', 'blue', 'purple', 'red']):
@@ -8673,10 +8683,11 @@ def get_df_hist2(df_ARIMA):
         ddict2['clr'].append(clrname)
     ddict2 = {k:[e for l in v for e in l] for k,v in ddict2.items()}
     df_hist2 = pd.DataFrame(ddict2)
+    print('returning df_hist2...')
     return df_hist2
 
 def modify_doc(doc):
-    
+    print('modifying doc...')
     # Make widgets
     type_picker = Select(title="Type", value="S&P500", 
                          options=["Digital Currency", 
