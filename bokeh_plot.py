@@ -49,9 +49,7 @@ from statsmodels.tsa.stattools import pacf
 from statsmodels.graphics.tsaplots import plot_pacf
 from statsmodels.distributions.empirical_distribution import ECDF
 
-import pyramid as pm
 from pyramid.arima import auto_arima
-from pyramid.arima import arima as pyrima
 
 from sklearn import base, tree
 from sklearn.compose import ColumnTransformer
@@ -8599,7 +8597,7 @@ def get_ARIMA_ab(df_ticker, train_a, train_b, forecast_length=5, n_projections=1
                  'd':None, 'D':1, 'trace':True, 'error_action':'ignore', 
                  'suppress_warnings':True, 'stepwise':True, 'njobs':6}
     
-    model = pm.auto_arima(seriesi.iloc[train_a:train_b], **aa_kwargs)
+    model = auto_arima(seriesi.iloc[train_a:train_b], **aa_kwargs)
     print('SARIMAX hyperparameters determined.')
     model_kwargs = model.arima_res_._init_kwds.copy()
     model_params = model.params()
