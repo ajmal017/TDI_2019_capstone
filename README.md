@@ -1,6 +1,6 @@
 # TDI_2019_capstone
 Capstone Project for The Data Incubator Fellowship
-Deployed at https://dashboard.heroku.com/apps/still-shore-32206
+Deployed at https://still-shore-32206.herokuapp.com/bokeh_plot
 
 Business Objective: Bots 4 Humans is an interactive web application to craft trade and deploy your own algorithm for trading financial instruments. The aim is to enable the casual investor to quickly and easily inspect price charts of a plethora of stocks, cryptos, and physical currencies and use a variety of different machine learning algorithms as well as traditional time series analysis (seasonal ARIMA) to make predictions about daily prices about the selected commodity. Each model makes its own prediction, empowering the creative user to recognize which model may best exploit various patterns in the price behavior, to ultimately inform competitive trades.  
 
